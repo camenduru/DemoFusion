@@ -43,4 +43,4 @@ iface = gr.Interface(
     description="Generate images with the DemoFusion SDXL Pipeline."
 )
 
-iface.launch()
+iface.launch(share=True)
