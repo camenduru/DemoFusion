@@ -5,19 +5,15 @@ import torch
 
 def generate_images(prompt, negative_prompt, height, width, num_inference_steps, guidance_scale, cosine_scale_1, cosine_scale_2, cosine_scale_3, sigma, view_batch_size, stride, seed):
     model_ckpt = "stabilityai/stable-diffusion-xl-base-1.0"
-    pipe = DemoFusionSDXLPipeline.from_pretrained(model_ckpt, torch_dtype=torch.float16, variant='fp16')
-    pipe = pipe.to("cuda")
-
+    pipe = DemoFusionSDXLPipeline.from_pretrained(model_ckpt, torch_dtype=torch.float16, variant='fp16').to("cuda")
     generator = torch.Generator(device='cuda')
     generator = generator.manual_seed(int(seed))
-
     images = pipe(prompt, negative_prompt=negative_prompt, generator=generator,
                   height=int(height), width=int(width), view_batch_size=int(view_batch_size), stride=int(stride),
                   num_inference_steps=int(num_inference_steps), guidance_scale=guidance_scale,
                   cosine_scale_1=cosine_scale_1, cosine_scale_2=cosine_scale_2, cosine_scale_3=cosine_scale_3, sigma=sigma,
                   multi_decoder=True, show_image=False, lowvram=True
                  )
-
     return (images[0], images[-1])
 
 with gr.Blocks(title=f"DeepCache", css=".gradio-container {max-width: 544px !important}") as demo:
@@ -36,6 +32,6 @@ with gr.Blocks(title=f"DeepCache", css=".gradio-container {max-width: 544px !imp
         stride = gr.Slider(minimum=8, maximum=96, step=8, value=64, label="Stride")
         seed = gr.Number(label="Seed", value=2013)
         button = gr.Button()
-        output_images = gr.Gallery(show_label=False, height=512, width=512, elem_id="output_image")
+        output_images = gr.Gallery(show_label=False)
     button.click(fn=generate_images, inputs=[prompt, negative_prompt, height, width, num_inference_steps, guidance_scale, cosine_scale_1, cosine_scale_2, cosine_scale_3, sigma, view_batch_size, stride, seed], outputs=[output_images], show_progress=True)
 demo.queue().launch(inline=False, share=True, debug=True)
