@@ -1,12 +1,13 @@
 import gradio as gr
 from pipeline_demofusion_sdxl import DemoFusionSDXLPipeline
 from gradio_imageslider import ImageSlider
+# from diffusers.models import AutoencoderKL
 import torch
 
 def generate_images(prompt, negative_prompt, height, width, num_inference_steps, guidance_scale, cosine_scale_1, cosine_scale_2, cosine_scale_3, sigma, view_batch_size, stride, seed):
     model_ckpt = "stabilityai/stable-diffusion-xl-base-1.0"
-    pipe = DemoFusionSDXLPipeline.from_pretrained(model_ckpt, torch_dtype=torch.float16)
-    pipe = pipe.to("cuda")
+    # vae = AutoencoderKL.from_pretrained("madebyollin/sdxl-vae-fp16-fix", torch_dtype=torch.float16)
+    pipe = DemoFusionSDXLPipeline.from_pretrained(model_ckpt, variant='fp16', torch_dtype=torch.float16).to("cuda")
 
     generator = torch.Generator(device='cuda')
     generator = generator.manual_seed(int(seed))
