@@ -16,7 +16,7 @@ def generate_images(prompt, negative_prompt, height, width, num_inference_steps,
                   height=int(height), width=int(width), view_batch_size=int(view_batch_size), stride=int(stride),
                   num_inference_steps=int(num_inference_steps), guidance_scale=guidance_scale,
                   cosine_scale_1=cosine_scale_1, cosine_scale_2=cosine_scale_2, cosine_scale_3=cosine_scale_3, sigma=sigma,
-                  multi_decoder=True, show_image=False
+                  multi_decoder=True, show_image=False, lowvram=True
                  )
 
     return (images[0], images[-1])
