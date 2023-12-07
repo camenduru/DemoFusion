@@ -36,6 +36,6 @@ with gr.Blocks(title=f"DeepCache", css=".gradio-container {max-width: 544px !imp
         stride = gr.Slider(minimum=8, maximum=96, step=8, value=64, label="Stride")
         seed = gr.Number(label="Seed", value=2013)
         button = gr.Button()
-        output_images = gr.Gallery(show_label=False, interactive=False, height=512, width=512, elem_id="output_image")
+        output_images = gr.Gallery(show_label=False, height=512, width=512, elem_id="output_image")
     button.click(fn=generate_images, inputs=[prompt, negative_prompt, height, width, num_inference_steps, guidance_scale, cosine_scale_1, cosine_scale_2, cosine_scale_3, sigma, view_batch_size, stride, seed], outputs=[output_images], show_progress=True)
 demo.queue().launch(inline=False, share=True, debug=True)
